@@ -1,27 +1,8 @@
 import "./App.css";
 import Runeterra from "runeterra";
 import React, { useState } from "react";
-import set1json from "./set_json/set1.json";
-import set2json from "./set_json/set2.json";
-import set3json from "./set_json/set3.json";
-import set4json from "./set_json/set4.json";
-import set5json from "./set_json/set5.json";
-import set6json from "./set_json/set6.json";
-import set7json from "./set_json/set7.json";
-import set8json from "./set_json/set8.json";
-import set9json from "./set_json/set9.json";
+import rtSets from "./set_json/setBarrel.js";
 
-const cardSetData = [
-  set1json,
-  set2json,
-  set3json,
-  set4json,
-  set5json,
-  set6json,
-  set7json,
-  set8json,
-  set9json,
-];
 
 export default App;
 
@@ -45,7 +26,7 @@ const deckCode =
 function App() {
   // const [darkMode, setDarkMode] = useState(false);
   // const bgColor = darkMode ? "black" : "white";
-
+  console.log(rtSets[0]);
   return (
     <>
       <DeckContainer />
@@ -65,12 +46,16 @@ function DeckContainer() {
   function prepareDeck(deckCode) {
     return Runeterra.DeckEncoder.decode(deckCode)
       .map((card) => {
-        let currentSet = cardSetData[card.set - 1];
+        
+        console.log(card.code);
+        let currentSet = rtSets[card.set - 1];
         for (let i in currentSet) {
+          console.log(currentSet[i].name)
           if (currentSet[i].cardCode === card.code) {
             card.name = currentSet[i].name;
             // card.img = currentSet[i].fullAbsolutePath;
             card.cost = currentSet[i].cost;
+            console.log("card found");
             break;
           }
         }
@@ -87,7 +72,7 @@ function DeckContainer() {
         <ul>
           {prepareDeck(deckCode).map((card) => {
             // console.log(card.name);
-
+            
             return <Card card={card} />;
           })}
         </ul>
@@ -97,6 +82,6 @@ function DeckContainer() {
 }
 
 function Card({ card }) {
-  console.log(card);
+  // console.log(card.name);
   return <li key={card.name}>{card.name}</li>;
 }
