@@ -6,27 +6,9 @@ import rtSets from "./set_json/setBarrel.js";
 
 export default App;
 
-const deckCode =
-  "CECAEAIDD4QQEBADAQHQECABCMMAIAIBCYPCMKIEAEAQCBABAQBQQAIGAADACCAAAYBACAIBFIAQMAIS";
-
-// const regionColors = {
-//   "Bandle City": "rgba(159, 192, 0, 1)",
-//   Targon: "rgba(105, 57, 204, 1)",
-//   Shurima: "rgba(238, 192, 30,1)",
-//   Noxus: "rgba(182, 0, 30,1)",
-//   Freljord: "rgba(135, 211, 233, 1)",
-//   Demacia: "rgba(233, 218, 179, 1)",
-//   Ionia: "rgba(248, 107, 179, 1)",
-//   Bilgewater: "rgba(181, 69, 44,1)",
-//   "Piltover & Zaun": "rgba(255, 129, 53,1)",
-//   Runeterra: "rgba(129, 112, 74, 1)",
-//   "Shadow Isles": "rgba(0, 163, 132,1)",
-// };
-
 function App() {
   // const [darkMode, setDarkMode] = useState(false);
   // const bgColor = darkMode ? "black" : "white";
-  console.log(rtSets[0]);
   return (
     <>
       <DeckContainer />
@@ -35,8 +17,19 @@ function App() {
 }
 
 function DeckContainer() {
-  const [deckCode, setDeckCode] = useState(
-    "CMDQCAIBCQAQIAIJAEDAOMYBBADQEAIJAEHAEBAHFREQICABAEBAYDYCAEAQCKQBBAAR4AIDAQDSEO3N"
+
+  
+
+  const [textInput, setTextInput] = useState("");
+
+  const [deckCode1, setDeckCode1] = useState(
+    ""
+  );
+  const [deckCode2, setDeckCode2] = useState(
+    ""
+  );
+  const [deckCode3, setDeckCode3] = useState(
+    ""
   );
 
   //Params: deckCode (State)
@@ -47,15 +40,13 @@ function DeckContainer() {
     return Runeterra.DeckEncoder.decode(deckCode)
       .map((card) => {
         
-        console.log(card.code);
         let currentSet = rtSets[card.set - 1];
         for (let i in currentSet) {
-          console.log(currentSet[i].name)
+          // console.log(currentSet[i].name)
           if (currentSet[i].cardCode === card.code) {
             card.name = currentSet[i].name;
             // card.img = currentSet[i].fullAbsolutePath;
             card.cost = currentSet[i].cost;
-            console.log("card found");
             break;
           }
         }
@@ -64,16 +55,34 @@ function DeckContainer() {
       .sort((a, b) => a.cost - b.cost);
   }
 
+ 
+  function addDeckCode(){
+    console.log("addDeckCode run");
+    if (!deckCode1) setDeckCode1(textInput);
+    else if (!deckCode2) setDeckCode2(textInput);
+    else if (!deckCode3) setDeckCode3(textInput);
+    else alert("All deck codes are filled, please remove a deck code before continuing");
+  }
+
   return (
     <>
-      {Runeterra.DeckEncoder.isValidDeck(
-        Runeterra.DeckEncoder.decode(deckCode)
+    <label> Add Deck Code: 
+      <input type="text" className="deckCodeInput" onChange={(e) => {setTextInput(e.target.value); console.log(e.target.value)} } ></input>
+      <button type="submit" onClick={addDeckCode}>Submit</button>
+    </label>
+
+    {deckCode1 && <> <p>{deckCode1}</p>
+    <button onClick={() => setDeckCode1("")}>Remove DC1</button></>}
+   
+
+      {deckCode1 && Runeterra.DeckEncoder.isValidDeck(
+        Runeterra.DeckEncoder.decode(deckCode1)
       ) && (
         <ul>
-          {prepareDeck(deckCode).map((card) => {
+          {prepareDeck(deckCode1).map((card) => {
             // console.log(card.name);
             
-            return <Card card={card} />;
+            return <Card card={card} key={card.code}/>;
           })}
         </ul>
       )}
