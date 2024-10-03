@@ -5,6 +5,9 @@ import rtSets from "./set_json/setBarrel.js";
 
 export default App;
 
+const regionColors = {"Bandle City":"rgba(159, 192, 0, 1)", "Targon":"rgba(105, 57, 204, 1)", "Shurima":"rgba(238, 192, 30,1)", "Noxus": "rgba(182, 0, 30,1)", "Freljord":"rgba(135, 211, 233, 1)", "Demacia":"rgba(233, 218, 179, 1)", "Ionia":"rgba(248, 107, 179, 1)",  "Bilgewater":"rgba(181, 69, 44,1)", "Piltover & Zaun":"rgba(255, 129, 53,1)", "Runeterra":"rgba(129, 112, 74, 1)", "Shadow Isles":"rgba(0, 163, 132,1)"}
+
+
 function App() {
   // const [darkMode, setDarkMode] = useState(false);
   // const bgColor = darkMode ? "black" : "white";
@@ -32,6 +35,8 @@ function DeckContainer() {
           // console.log(currentSet[i].name)
           if (currentSet[i].cardCode === card.code) {
             card.name = currentSet[i].name;
+            card.region = card.code.substring(2,4);
+            console.log(card.region);
             // card.img = currentSet[i].fullAbsolutePath;
             card.cost = currentSet[i].cost;
             break;
@@ -66,18 +71,19 @@ function DeckContainer() {
           Submit
         </button>
       </label>
-
+          <div className="decksWrapper">
       {deckCodes.map((deck, deckIndex) => {
         deckCodes.filter(a => a === deckCodes[deckIndex])
         return (
           <>
-            <ul>
+            <div className="deck">
+            <ul style={{listStyleType:"none", padding:0}}>
               {prepareDeck(deck).map((card) => {
                 return <Card card={card} key={card.code} />;
               })}
             </ul>
 
-            <button key={deckIndex}
+            <button key={deckIndex} className="removeDeckButton"
               onClick={() => setDeckCodes(
                 deckCodes.filter(a => a !== deckCodes[deckIndex])
                 
@@ -85,14 +91,16 @@ function DeckContainer() {
             >
               Remove DC
             </button>
+            </div>
           </>
         );
       })}
+      </div>
     </>
   );
 }
 
 function Card({ card }) {
   // console.log(card.name);
-  return <li key={card.name}>{card.name}</li>;
+  return (<div style={{borderRadius:"10px"}} className={card.region.toLowerCase()}><li className="card" key={card.name}>{card.name}</li></div>);
 }
