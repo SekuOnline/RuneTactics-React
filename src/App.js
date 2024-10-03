@@ -3,7 +3,6 @@ import Runeterra from "runeterra";
 import React, { useState } from "react";
 import rtSets from "./set_json/setBarrel.js";
 
-
 export default App;
 
 function App() {
@@ -17,20 +16,9 @@ function App() {
 }
 
 function DeckContainer() {
-
-  
-
   const [textInput, setTextInput] = useState("");
-
-  const [deckCode1, setDeckCode1] = useState(
-    ""
-  );
-  const [deckCode2, setDeckCode2] = useState(
-    ""
-  );
-  const [deckCode3, setDeckCode3] = useState(
-    ""
-  );
+  const [deckCodes, setDeckCodes] = useState([]);
+  const maxDecks = 3;
 
   //Params: deckCode (State)
   //maps through the deck to add additional required attributes,
@@ -39,7 +27,6 @@ function DeckContainer() {
   function prepareDeck(deckCode) {
     return Runeterra.DeckEncoder.decode(deckCode)
       .map((card) => {
-        
         let currentSet = rtSets[card.set - 1];
         for (let i in currentSet) {
           // console.log(currentSet[i].name)
@@ -55,37 +42,52 @@ function DeckContainer() {
       .sort((a, b) => a.cost - b.cost);
   }
 
- 
-  function addDeckCode(){
-    console.log("addDeckCode run");
-    if (!deckCode1) setDeckCode1(textInput);
-    else if (!deckCode2) setDeckCode2(textInput);
-    else if (!deckCode3) setDeckCode3(textInput);
-    else alert("All deck codes are filled, please remove a deck code before continuing");
+  function addDeckCode() {
+    if (deckCodes.length >= maxDecks) {
+      alert("Deck slots full");
+      return;
+    }
+    setDeckCodes([...deckCodes, textInput]);
   }
 
   return (
     <>
-    <label> Add Deck Code: 
-      <input type="text" className="deckCodeInput" onChange={(e) => {setTextInput(e.target.value); console.log(e.target.value)} } ></input>
-      <button type="submit" onClick={addDeckCode}>Submit</button>
-    </label>
+      <label>
+        Add Deck Code:
+        <input
+          type="text"
+          className="deckCodeInput"
+          onChange={(e) => {
+            setTextInput(e.target.value);
+            console.log(e.target.value);
+          }}
+        ></input>
+        <button type="submit" onClick={addDeckCode}>
+          Submit
+        </button>
+      </label>
 
-    {deckCode1 && <> <p>{deckCode1}</p>
-    <button onClick={() => setDeckCode1("")}>Remove DC1</button></>}
-   
+      {deckCodes.map((deck, deckIndex) => {
+        deckCodes.filter(a => a === deckCodes[deckIndex])
+        return (
+          <>
+            <ul>
+              {prepareDeck(deck).map((card) => {
+                return <Card card={card} key={card.code} />;
+              })}
+            </ul>
 
-      {deckCode1 && Runeterra.DeckEncoder.isValidDeck(
-        Runeterra.DeckEncoder.decode(deckCode1)
-      ) && (
-        <ul>
-          {prepareDeck(deckCode1).map((card) => {
-            // console.log(card.name);
-            
-            return <Card card={card} key={card.code}/>;
-          })}
-        </ul>
-      )}
+            <button key={deckIndex}
+              onClick={() => setDeckCodes(
+                deckCodes.filter(a => a !== deckCodes[deckIndex])
+                
+              )}
+            >
+              Remove DC
+            </button>
+          </>
+        );
+      })}
     </>
   );
 }
