@@ -2,13 +2,40 @@
   /* background-image:linear-gradient(to right, rgba(159, 192, 0, 1) 30%, rgba(0,0,0,0) 70%); */
 /* }  */
 
-.card{
+@font-face {
+  font-family: 'UrbaneRounded-DemiBold';
+  src: url('../public/UrbaneRounded-DemiBold.ttf') format('truetype');
+}
+
+.addDeckSpan{
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
+
+.addDeckInnerItems{
+  width: 50vw;
+  display:flex;
+  justify-content: space-evenly;
+}
+
+.app{
+  background-color: #090a0d;
+  color: white;
+  min-height: 100vh;
+  max-height: fit-content;
+  min-width: 100vw;
+}
+
+.card {
   width: 20vw;
   height: fit-content;
   list-style-type: none;
+  padding-top: 3px;
   padding-bottom: 3px;
   display:flex;
   justify-content: center;
+  font-family: 'UrbaneRounded-DemiBold';
 }
 
 .deck{
@@ -17,6 +44,10 @@
   width: fit-content;
   justify-content: center;
   align-items: center;
+  padding:10px;
+  border-radius: 30px;
+  background-color:#a7afc3;
+  color:black;
 }
 
 .decksWrapper{
@@ -24,7 +55,8 @@
   flex-direction: row;
   width:100vw;
   justify-content:space-evenly;
-  align-items: center;
+  align-items: start;
+  padding-top:5vh;
 }
 
 .removeDeckButton{
@@ -70,4 +102,8 @@
 
 .ru{
   background-color: darkkhaki;
+}
+
+.si{
+  background-color: green;
 }
