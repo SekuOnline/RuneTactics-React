@@ -106,6 +106,14 @@
   color: white;
   text-shadow: 2px 0 black;
 }
+.deck li {
+  background-color: #00000099;
+  padding: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  /* border: solid 1px white; */
+  border-radius: 10px;
+}
 
 .decksWrapper {
   display: flex;
