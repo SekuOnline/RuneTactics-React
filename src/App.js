@@ -5,6 +5,20 @@ import rtSets from "./set_json/setBarrel.js";
 
 export default App;
 
+const regionColours = [
+  { region: "bc", colour: "rgba(159, 192, 0, 1)" },
+  { region: "mt", colour: "rgba(105, 57, 204, 1)" },
+  { region: "sh", colour: "rgba(238, 192, 30,1)" },
+  { region: "nx", colour: "rgba(182, 0, 30, 1)" },
+  { region: "fr", colour: "rgba(135, 211, 233, 1)" },
+  { region: "de", colour: "rgba(233, 218, 179, 1)" },
+  { region: "io", colour: "rgba(248, 107, 179, 1)" },
+  { region: "bw", colour: "rgba(181, 69, 44, 1)" },
+  { region: "pz", colour: "rgba(255, 129, 53, 1)" },
+  { region: "ru", colour: "rgba(129, 112, 74, 1)" },
+  { region: "si", colour: "rgba(0, 163, 132,1)" },
+];
+
 function App() {
   // const [darkMode, setDarkMode] = useState(false);
   // const bgColor = darkMode ? "black" : "white";
@@ -36,9 +50,16 @@ function DeckContainer() {
         for (let i in currentSet) {
           if (currentSet[i].cardCode === card.code) {
             card.name = currentSet[i].name;
-            card.region = card.code.substring(2, 4);
+            card.region = card.code.substring(2, 4).toLowerCase();
             card.cost = currentSet[i].cost;
             card.art = currentSet[i].assets[0].fullAbsolutePath;
+            card.type = currentSet[i].type;
+            let [smth, ...rest] = regionColours.filter(
+              (e) => e.region === card.region
+            );
+            card.colour = smth.colour;
+            // console.log(card.colour);
+
             break;
           }
         }
@@ -107,10 +128,19 @@ function DeckContainer() {
 
 function Card({ card }) {
   return (
-    <div style={{ borderRadius: "10px" }} className={card.region.toLowerCase()}>
-      <li className="card" key={card.name}>
-        {card.name}
-      </li>
+    <div className="cardBox">
+      <div
+        style={{
+          backgroundImage: `linear-gradient(to right, ${card.colour} 0%, rgba(0,0,0,0) 60%), url(${card.art}) `,
+          backgroundColor: `${card.colour}`,
+        }}
+        className={card.type === "Spell" ? "cardArtSpell" : "cardArtOther"}
+      >
+        <span className="cost">{card.cost}</span>
+
+        <li key={card.name}>{card.name}</li>
+        <span className="count">{card.count}</span>
+      </div>
     </div>
   );
 }
