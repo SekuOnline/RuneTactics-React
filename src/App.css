@@ -11,17 +11,24 @@
   width: 100vw;
   display: flex;
   justify-content: center;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  align-content: center;
+  font-family: "UrbaneRounded-DemiBold";
+  font-size: large;
 }
 
 .addDeckInnerItems {
   background-color: #1b2b47;
-  margin-top: 10px;
+  margin-top: -10px;
   padding: 10px;
-  width: 20vw;
+  padding-top: 20px;
+  width: fit-content;
   display: flex;
   justify-content: space-evenly;
   border-radius: 15px;
+}
+
+.addDeckInnerItems * {
+  margin-inline-start: 20px;
 }
 
 .app {
@@ -46,7 +53,7 @@
   height: fit-content;
 
   text-align: center;
-  border: solid, 1px, gold;
+  border: solid, 1px, white;
 }
 .cost {
   width: 25px;
@@ -126,4 +133,20 @@
 
 .removeDeckButton {
   width: fit-content;
+}
+
+.button {
+  background-color: rgb(88, 96, 133);
+  border: none;
+
+  color: white;
+  border-radius: 10px;
+  font-family: "UrbaneRounded-DemiBold";
+  padding: 4px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.button:hover {
+  background-color: goldenrod;
 }

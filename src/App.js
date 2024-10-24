@@ -49,17 +49,17 @@ function DeckContainer() {
         let currentSet = rtSets[card.set - 1];
         for (let i in currentSet) {
           if (currentSet[i].cardCode === card.code) {
-            card.name = currentSet[i].name;
-            card.region = card.code.substring(2, 4).toLowerCase();
-            card.cost = currentSet[i].cost;
-            card.art = currentSet[i].assets[0].fullAbsolutePath;
-            card.type = currentSet[i].type;
-            let [smth, ...rest] = regionColours.filter(
-              (e) => e.region === card.region
-            );
-            card.colour = smth.colour;
-            // console.log(card.colour);
+            card = {
+              ...card,
+              name: currentSet[i].name,
+              region: card.code.substring(2, 4).toLowerCase(),
+              cost: currentSet[i].cost,
+              art: currentSet[i].assets[0].fullAbsolutePath,
+              type: currentSet[i].region,
+            };
 
+            let region = card.region;
+            card.colour = regionColours.find((e) => e.region === region).colour;
             break;
           }
         }
@@ -89,7 +89,7 @@ function DeckContainer() {
               console.log(e.target.value);
             }}
           ></input>
-          <button type="submit" onClick={addDeckCode}>
+          <button type="submit" className="button" onClick={addDeckCode}>
             Submit
           </button>
         </label>
@@ -108,14 +108,14 @@ function DeckContainer() {
 
                 <button
                   key={deckIndex}
-                  className="removeDeckButton"
+                  className="button"
                   onClick={() =>
                     setDeckCodes(
                       deckCodes.filter((a) => a !== deckCodes[deckIndex])
                     )
                   }
                 >
-                  Remove DC
+                  Remove Deck
                 </button>
               </div>
             </>
