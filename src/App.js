@@ -55,6 +55,7 @@ function DeckContainer() {
               region: card.code.substring(2, 4).toLowerCase(),
               cost: currentSet[i].cost,
               art: currentSet[i].assets[0].fullAbsolutePath,
+              cardArt: currentSet[i].assets[0].gameAbsolutePath,
               type: currentSet[i].region,
             };
 
@@ -127,8 +128,16 @@ function DeckContainer() {
 }
 
 function Card({ card }) {
+  const [isHovering, setIsHovering] = useState(false);
+
+  const onHover = () => setIsHovering(true);
+  const onHoverLeave = () => setIsHovering(false);
+
   return (
-    <div className="cardBox">
+    <div className="cardBox" onMouseOver={onHover} onMouseLeave={onHoverLeave}>
+      {isHovering && (
+        <img className="onHoverCard" src={card.cardArt} alt={card.name}></img>
+      )}
       <div
         style={{
           backgroundImage: `linear-gradient(to right, ${card.colour} 0%, rgba(0,0,0,0) 60%), url(${card.art}) `,
